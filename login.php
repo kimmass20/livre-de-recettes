@@ -5,12 +5,7 @@
  * ces données doivent être testées et vérifiées.
  */
 
-require_once __DIR__ . '/variables.php';
-
 $postData = $_POST;
-
-// Charger les données utilisateurs (définies dans variables.php)
-require_once __DIR__ . '/variables.php';
 
 
 // Validation du formulaire
@@ -19,14 +14,13 @@ if (isset($postData['email']) &&  isset($postData['password'])) {
         $errorMessage = 'Il faut un email valide pour soumettre le formulaire.';
     } else {
         foreach ($users as $user) {
-            if ($user['email'] === $postData['email'] &&
-                isset($user['password']) &&
-                password_verify($postData['password'], $user['password'])
+            if (
+                $user['email'] === $postData['email'] &&
+                $user['password'] === $postData['password']
             ) {
                 $loggedUser = [
                     'email' => $user['email'],
                 ];
-                break;
             }
         }
 
@@ -42,7 +36,7 @@ if (isset($postData['email']) &&  isset($postData['password'])) {
 ?>
 
     <!--
-    Si utilisateur/trice est non identifié(e), on affiche le formulaire
+       Si utilisateur/trice est non identifié(e), on affiche le formulaire
     -->
 <?php if (!isset($loggedUser)) : ?>
     <form action="index.php" method="POST">
